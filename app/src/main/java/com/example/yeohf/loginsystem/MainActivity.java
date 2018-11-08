@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             }
         });
+        // Testing push
         database_allref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

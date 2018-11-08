@@ -36,8 +36,6 @@ public class Rental {
         this.model = model;
         this.listingType = listingType;
         this.userid=userid;
-
-
     }
 
     public String getModel() {
