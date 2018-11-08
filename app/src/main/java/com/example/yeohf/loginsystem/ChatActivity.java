@@ -31,7 +31,7 @@ public class ChatActivity extends AppCompatActivity implements BottomNavigationV
     List<Chat> messageList;
     FirebaseAuth firebaseauth;
     String chatid, rentid;
-
+    int a;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
