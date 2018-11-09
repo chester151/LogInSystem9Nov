@@ -54,9 +54,9 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile userprofile=dataSnapshot.getValue(UserProfile.class);
-                profilename.setText("Name:"+userprofile.getUserName());
-                profilecontact.setText("Contact:"+userprofile.getUserContact());
-                profileemail.setText("Email:"+userprofile.getUserEmail());
+                profilename.setText(userprofile.getUserName());
+                profilecontact.setText(userprofile.getUserContact());
+                profileemail.setText(userprofile.getUserEmail());
             }
 
             @Override
@@ -97,15 +97,15 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
     }
 
     private void setUp(){
-        profilename= (TextView)findViewById(R.id.etProfilename);
-        profilecontact=(TextView)findViewById(R.id.etProfilecontact);
-        profileemail=(TextView)findViewById(R.id.etProfilemail);
+        profilename = findViewById(R.id.etProfilename);
+        profilecontact = findViewById(R.id.etProfilecontact);
+        profileemail = findViewById(R.id.etProfilemail);
 
-        profiledp= findViewById(R.id.ivProfiledp);
+        profiledp = findViewById(R.id.ivProfiledp);
 
-        btnupdateprofile=(Button)findViewById(R.id.btnUpdateEmail);
-        btnchangemailpass=(Button)findViewById(R.id.btnChangemailpass);
-        btngoback=(Button)findViewById(R.id.btnBack);
+        btnupdateprofile = findViewById(R.id.btnUpdateEmail);
+        btnchangemailpass = findViewById(R.id.btnChangemailpass);
+        btngoback = findViewById(R.id.btnBack);
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
