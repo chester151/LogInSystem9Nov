@@ -1,6 +1,7 @@
 package com.example.yeohf.loginsystem.Adapters;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -58,6 +59,43 @@ public class RentalListAdapter extends ArrayAdapter<Rental> {
 
         return listViewItem;
     }
+    public void filter(Bundle thebundle) {
+        rentalList.clear();
+        if (thebundle == null) {
+            rentalList.addAll(tempRentalList);
+        } else {
+            String zone =  thebundle.getString("zonefilter");
+            String storey =  thebundle.getString("storeyfilter");
+            String type =  thebundle.getString("typefilter");
+            String model =  thebundle.getString("modelfilter");
+            int checked =  thebundle.getInt("checkedselection");
+            String pricemin =  thebundle.getString("pricemin");
+            String pricemax =  thebundle.getString("pricemax");
+            String listingtype = "";
+            switch (checked) {
+                case 0:
+                    listingtype = "Rental";
+                    break;
+                case 1:
+                    listingtype = "Resale";
+                    break;
+                case 2:
+                    listingtype = "Both";
+                    break;
+            }
+            for (Rental rent : tempRentalList) {
+                if (rent.getZone().equals(zone) && rent.getStorey().equals(storey) &&
+                        rent.getType().equals(type) && rent.getModel().equals(model) &&
+                        rent.getZone().equals(zone) && rent.getStorey().equals(storey) &&
+                        rent.getListingType().equals(listingtype) && Integer.parseInt(rent.getPrice()) >= Integer.parseInt(pricemin)
+                        && Integer.parseInt(rent.getPrice()) <= Integer.parseInt(pricemax))
+                {
+                    rentalList.add(rent);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
@@ -75,4 +113,11 @@ public class RentalListAdapter extends ArrayAdapter<Rental> {
         notifyDataSetChanged();
     }
 
+    public void reset() {
+        rentalList.clear();
+            for (Rental rent : tempRentalList) {
+                    rentalList.add(rent);
+        }
+        notifyDataSetChanged();
+    }
 }

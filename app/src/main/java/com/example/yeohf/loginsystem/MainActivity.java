@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     List<Rental> overall_rentallist;
     DatabaseReference database_allref;
     EditText searchRental;
+    FloatingActionButton filter;
+    Button reset;
     RentalListAdapter adapter;
     Menu menu;
 
@@ -55,13 +59,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         database_allref = FirebaseDatabase.getInstance().getReference("Rentals");
         listViewOverallRentals = findViewById(R.id.allrentalsList);
         searchRental = findViewById(R.id.searchRental);
+        filter = findViewById(R.id.filterbutton);
+        reset = findViewById(R.id.btnReset);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_view3);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         for(int i=0;i<bottomNavigationView.getMenu().size();i++){
             bottomNavigationView.getMenu().getItem(i).setChecked(false);
         }
-        MenuItem menuitem= bottomNavigationView.getMenu().findItem(R.id.homeicon);
+        MenuItem menuitem = bottomNavigationView.getMenu().findItem(R.id.homeicon);
         menuitem.setChecked(true);
 
         listViewOverallRentals.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,7 +92,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             }
         });
-        // Testing push
+
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FilterActivity.class);
+                startActivity(intent);
+            }
+        });
+
         database_allref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -106,6 +120,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 // Toast.makeText(getApplicationContext(), "Cool!", Toast.LENGTH_SHORT).show();
                 adapter = new RentalListAdapter(MainActivity.this, overall_rentallist);
                 listViewOverallRentals.setAdapter(adapter);
+                Intent intent = getIntent();
+                Bundle extras = intent.getExtras();
+                if (extras != null) {
+                    adapter.filter(extras);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -126,6 +145,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             public void afterTextChanged(Editable s) {
                 String text = searchRental.getText().toString().toLowerCase(Locale.getDefault());
                 adapter.filter(text);
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.reset();
+                Toast.makeText(getApplicationContext(), "List has been reset!", Toast.LENGTH_SHORT).show();
             }
         });
     }

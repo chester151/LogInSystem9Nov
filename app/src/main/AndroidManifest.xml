@@ -27,7 +27,7 @@
         <activity android:name=".UpdateMailPassActivity" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".CreateListingActivity" />
-
+        <activity android:name=".FilterActivity" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDPcC23A0f0buxw8Ua3IjxIyBZYGd1Oz0I" />
