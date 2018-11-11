@@ -17,11 +17,14 @@ public class Rental {
     public String imagePath;
     public String chatId;
     public String userid;
+    public String key;
+
+
 
     public Rental(){
     }
 
-    public Rental(String id, String title, String address, String model, String listingType, String zone, String type, String storey, String price, String imagePath, String chatid, String userid, double lat, double lng) {
+    public Rental(String id, String title, String address, String model, String listingType, String zone, String type, String storey, String price, String imagePath, String chatid, String userid, String key, double lat, double lng) {
         this.address = address;
         this.price = price;
         this.rentalid= id;
@@ -36,8 +39,15 @@ public class Rental {
         this.model = model;
         this.listingType = listingType;
         this.userid=userid;
+        this.key=key;
     }
 
+    public String getKey() {
+        return key;
+    }
+    public void setKey(String key) {
+        this.key = key;
+    }
     public String getModel() {
         return model;
     }

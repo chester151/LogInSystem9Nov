@@ -66,12 +66,7 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
             }
         });
 
-        btngoback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ProfileActivity.this,ScreenActivity.class));
-            }
-        });
+
 
         btnupdateprofile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +100,7 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
 
         btnupdateprofile = findViewById(R.id.btnUpdateEmail);
         btnchangemailpass = findViewById(R.id.btnChangemailpass);
-        btngoback = findViewById(R.id.btnBack);
+
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -117,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
 
             case R.id.flatinfoicon:
                 Toast.makeText(getApplicationContext(), "You are now at the Personal Listings Page!", Toast.LENGTH_SHORT).show();
-                startActivity (new Intent (ProfileActivity.this,CreateListingActivity.class));
+                startActivity (new Intent (ProfileActivity.this,MyRentalActivity.class));
                 break;
 
             case R.id.sellicon:

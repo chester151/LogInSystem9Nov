@@ -185,6 +185,7 @@ public class CreateListingActivity extends AppCompatActivity implements BottomNa
         getValues();
         String id = ref.push().getKey();
         ref.child(id).setValue(rentalObj);
+        ref.child(id).child("key").setValue(id);
         Intent intent = new Intent(CreateListingActivity.this, MainActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), "Listing created!", Toast.LENGTH_SHORT);

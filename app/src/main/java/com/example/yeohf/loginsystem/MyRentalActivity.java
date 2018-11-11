@@ -1,8 +1,11 @@
 package com.example.yeohf.loginsystem;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,9 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.yeohf.loginsystem.Adapters.RentalListAdapter;
@@ -42,8 +47,10 @@ public class MyRentalActivity extends AppCompatActivity implements BottomNavigat
     RentalListAdapter adapter;
     Menu menu;
     Button delbtn;
-
-
+    Button editbtn;
+    Spinner delspinner;
+    Spinner editspinner;
+    Spinner editspinner2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,18 @@ public class MyRentalActivity extends AppCompatActivity implements BottomNavigat
         currentuser = mAuth.getCurrentUser();
         database_allref = FirebaseDatabase.getInstance().getReference("Rentals");
         listViewOverallRentals = findViewById(R.id.myrentalsList);
+        delbtn= (Button)findViewById(R.id.delbtn);
+        editbtn= (Button)findViewById(R.id.editbtn);
+
+
+        editspinner= (Spinner)findViewById(R.id.spinner2);
+        final List<String> editname= new ArrayList<String>();
+        editname.add("");
+        editname.add("Title");
+        editname.add("Price");
+        ArrayAdapter<String> editAdapter = new ArrayAdapter<String>(MyRentalActivity.this, android.R.layout.simple_spinner_item, editname);
+        editspinner.setAdapter(editAdapter);
+        editspinner2= (Spinner)findViewById(R.id.spinner3);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_view2);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -90,11 +109,13 @@ public class MyRentalActivity extends AppCompatActivity implements BottomNavigat
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 overall_rentallist.clear();
+                final List<String> rentalname= new ArrayList<String>();
                 Iterable<DataSnapshot> child = dataSnapshot.getChildren();
                 for (DataSnapshot uniquesnap : child) {
                         Rental rental = uniquesnap.getValue(Rental.class);
                         if(rental.getUserid().equals(currentuser.getUid())){
                         overall_rentallist.add(rental);
+                        rentalname.add(rental.getTitle());
                     }
                 }
                /* overall_rentallist.clear();
@@ -107,13 +128,112 @@ public class MyRentalActivity extends AppCompatActivity implements BottomNavigat
                 // Toast.makeText(getApplicationContext(), "Cool!", Toast.LENGTH_SHORT).show();
                 adapter = new RentalListAdapter(MyRentalActivity.this, overall_rentallist);
                 listViewOverallRentals.setAdapter(adapter);
+                delspinner= (Spinner)findViewById(R.id.spinner);
+                ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(MyRentalActivity.this, android.R.layout.simple_spinner_item, rentalname);
+                nameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                delspinner.setAdapter(nameAdapter);
+                editspinner2.setAdapter(nameAdapter);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+        editbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String text = delspinner.getSelectedItem().toString();
 
+                Toast.makeText(MyRentalActivity.this,"Hello"+text, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        editbtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final String variable= editspinner.getSelectedItem().toString();
+//                final String rentalname= editspinner2.getSelectedItem().toString();
+//                if(variable==""){
+//                    Toast.makeText(MyRentalActivity.this,"You must select a variable to change and the corresponding rental name!", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MyRentalActivity.this);
+//                final EditText input = new EditText(MyRentalActivity.this);
+//                ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(
+//                        ConstraintLayout.LayoutParams.MATCH_PARENT,
+//                        ConstraintLayout.LayoutParams.MATCH_PARENT);
+//                input.setLayoutParams(lp);
+//                alertDialog.setView(input);
+//
+//                alertDialog.setPositiveButton("YES",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                final String newvalue = input.getText().toString();
+//
+//
+//                                   database_allref.addValueEventListener(new ValueEventListener() {
+//                                       @Override
+//                                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                           Iterable<DataSnapshot> child = dataSnapshot.getChildren();
+//                                           for (DataSnapshot uniquesnap : child) {
+//                                               Rental rental = uniquesnap.getValue(Rental.class);
+//
+//                                               if (rental.getTitle().equals(rentalname)) {
+//                                                   if (variable.equals("title")) {
+//                                                       uniquesnap.getRef().child("title").setValue(newvalue);
+//                                                   } else {
+//                                                       uniquesnap.getRef().child("price").setValue(newvalue);
+//                                                   }
+//                                               }
+//                                           }
+//                                       }
+//
+//
+//                                        @Override
+//                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                        }
+//                                    });
+//                            }});
+//                alertDialog.setNegativeButton("NO",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//                alertDialog.setMessage("Enter new "+ variable+":");
+//                alertDialog.show();
+//
+//
+//            }
+//        });
+        delbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String text = delspinner.getSelectedItem().toString();
+
+                database_allref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Iterable<DataSnapshot> child = dataSnapshot.getChildren();
+                        for (DataSnapshot uniquesnap : child) {
+                            Rental rental = uniquesnap.getValue(Rental.class);
+                            if(rental.getTitle().equals(text)){
+                                uniquesnap.getRef().removeValue();
+                            }
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }});
 
 
     }

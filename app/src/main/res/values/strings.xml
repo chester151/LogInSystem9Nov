@@ -1,4 +1,4 @@
-<resources>
+    <resources>
     <string name="app_name">Property Manager</string>
     <string-array name="choices">
         <item>Select type of Amenity</item>
@@ -87,6 +87,8 @@
         <item>Type S1</item>
         <item>Type S2</item>
     </string-array>
+
+
 
     <string name="myflat">My Flat</string>
     <string name="home">Home</string>
